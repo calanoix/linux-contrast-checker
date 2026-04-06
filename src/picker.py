@@ -16,19 +16,29 @@ def capture_screen() -> QPixmap:
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as f:
         tmp_path = f.name
 
-    subprocess.run(
-        ["spectacle", "-b", "-f", "--nonotify", "-o", tmp_path],
-        capture_output=True,
-    )
+    # Stratégie : On essaie d'abord les outils qui gèrent DBus/Portals (KDE/GNOME)
+    # puis les outils directs (Sway/Hyprland), puis le legacy (X11).
+    methods = [
+        ["spectacle", "-b", "-f", "-n", "-o", tmp_path],
+        ["gnome-screenshot", "-f", tmp_path],
+        ["grim", tmp_path],
+    ]
 
-    pixmap = QPixmap()
-    pixmap.load(tmp_path)
-    os.unlink(tmp_path)
+    for cmd in methods:
+        try:
+            # check=True permet de sauter directement au 'except' si le code retour est != 0
+            subprocess.run(cmd, capture_output=True, check=True)
+            if os.path.exists(tmp_path) and os.path.getsize(tmp_path) > 0:
+                pixmap = QPixmap()
+                pixmap.load(tmp_path)
+                os.unlink(tmp_path)
+                return pixmap
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            continue
 
-    if pixmap.isNull():
-        raise RuntimeError("Capture échouée — image vide")
-
-    return pixmap
+    if os.path.exists(tmp_path):
+        os.unlink(tmp_path)
+    raise RuntimeError("No comptabile screenshot tool found, please install spectacle or grim to continue.")
 
 
 class PickerOverlay(QWidget):

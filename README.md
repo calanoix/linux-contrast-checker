@@ -15,6 +15,7 @@ Crammed my favorite features of CCA into a Wayland-compatible contrast checker.
 - Python 3.10+
 - PyQt6
 - `spectacle` (KDE screenshot tool)
+    - gnome-screenshot and grim could work, but I have not tested them
 
 ## Run
 ```bash
