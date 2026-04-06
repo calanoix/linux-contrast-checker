@@ -1,9 +1,17 @@
-# Contrast Checker
+# Linux Contrast Checker
 
-A WCAG contrast ratio checker for Linux built with PyQt6.
+Crammed my favorite features of CCA into a Wayland-compatible contrast checker.
+
+## Features
+
+- WCAG 2.2 contrast ratios verfication
+- Screen color picker with zoomed in pixels
+- Arrow keys move cursor during pixel selection
+- Input fields accepts HEX and RGB values
 
 ## Requirements
 
+- Wayland
 - Python 3.10+
 - PyQt6
 - `spectacle` (KDE screenshot tool)
