@@ -18,7 +18,12 @@ Crammed my favorite features of CCA into a Wayland-compatible contrast checker.
     - gnome-screenshot and grim could work, but I have not tested them
 
 ## Run
+### Via python
 ```bash
 pip install -r requirements.txt
 python src/widget.py
 ```
+
+### Via the executable
+
+- Download the latest release and run by double-clicking or using the terminal
